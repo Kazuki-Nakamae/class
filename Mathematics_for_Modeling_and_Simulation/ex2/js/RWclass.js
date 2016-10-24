@@ -262,7 +262,7 @@ randomwalker.prototype.updateHist=function(){
 */
 randomwalker.prototype.walk=function(forwardProb,time,controlSeed){
   for(var i=this.xArr.length-1;i>=0;i--){
-    if(i==this.xArr.length-1) Math.seedrandom(i*(time*controlSeed)+time+controlSeed);
+    if(i==this.xArr.length-1) Math.seedrandom(i*10000+time+controlSeed);
     var randomNum=Math.random();
     if(randomNum<=forwardProb){
       this.xArr[i]=this.xArr[i]+1
