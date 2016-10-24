@@ -1,4 +1,4 @@
-Random Walk シミュレーションプログラム
+ Random Walk シミュレーションプログラム
 
 index.htmlのCanvas要素上にヒストグラムとプロットを描写
 
