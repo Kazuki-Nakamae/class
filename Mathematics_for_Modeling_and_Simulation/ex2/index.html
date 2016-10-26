@@ -24,6 +24,7 @@
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/my.css">
 
 	<!-- Custom Fonts -->
 	<link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -40,22 +41,33 @@
 	<script src="js/RWclass.js"></script>
 </head>
 <body>
-
-<!--Title-->
-
-<div class="body-pageheader">
-	<div class="container">
-			<h1>Random Walk Simulation</h1>
-			<p class="lead">
-				Ex2
-	  	</p>
-	</div>
-</div>
-
 <div class="container">
-
-<!--canvas-->
-	<canvas id="simulation" width="900" height="600"></canvas>
+	<!--Contorol menu-->
+	<div class="row ">
+		<div class="panel panel-info">
+			<div class="panel-heading">SETTINGS</div>
+			<div class="panel-body">
+				<div class="col-md-4 center">The number of trials<input type="text" class="form-control" id="trials" placeholder="Number" value=3000></div>
+			  <div class="col-md-4 center">The seed group<input type="text" class="form-control" id="seed" placeholder="Number" value=1></div>
+			  <div class="col-md-4 center">Each takes a forward step with probability<input type="text" class="form-control" id="prob" placeholder="Number 0-1" value=2/3></div>
+			</div>
+			<!--/.panel-body-->
+		</div>
+		<!--/.panel panel-info-->
+	</div>
+	<!--/.row-->
+	<br>
+	<!--canvas-->
+	<div class="row center">
+		<canvas id="simulation" width="900" height="600"></canvas>
+	</div>
+	<!--/.row-->
+	<!--Start button-->
+	<div class="row center">
+		<button type="button" class="btn btn-success btn-block" onclick="loop()">RUN</button>
+	</div>
+	<!--/.row center-->
+	<br>
 </div>
 
 <script src="js/main.js"></script>

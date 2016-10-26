@@ -258,11 +258,11 @@ randomwalker.prototype.updateHist=function(){
 * ウォークを1進める
 * @param  {Number} forwardProb 前に進む確率
 * @param  {Number} time ステップ数(シードで結果を固定するために利用)
-* @param  {Number} controlSeed 可変シードこの値とステップ数を組み合わせてシードを作成,0は禁止
+* @param  {Number} controlSeed 可変シード この値とステップ数を組み合わせてシードを作成,0は禁止
 */
 randomwalker.prototype.walk=function(forwardProb,time,controlSeed){
   for(var i=this.xArr.length-1;i>=0;i--){
-    if(i==this.xArr.length-1) Math.seedrandom(i*10000+time+controlSeed);
+    if(i==this.xArr.length-1) Math.seedrandom((i*10000+time)*controlSeed);
     var randomNum=Math.random();
     if(randomNum<=forwardProb){
       this.xArr[i]=this.xArr[i]+1

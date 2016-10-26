@@ -51,27 +51,24 @@ var meanaxisArr = [50,100,150,200,250,300];
 var meansqaxisArr = [25000,50000,75000,100000,125000,150000];
 var width = canvasElement.width;   //canvas横幅
 var height = canvasElement.height; //canvas縦幅
-var trials=3000;
-
-//ランダムウォーク処理を行うクラスのインスタンスを宣言し、初期座標を入力
-var RWsimulation = new randomwalker(trials,width/2);
-for(var i=trials-1;i>=0;i--){
-  RWsimulation.setRW(0,'x',i)
-}
+var trials=1; //default
+var controlSeed=1; //default
+var forwardProb=1/2 //default
+var RWsimulation={};
 
 /*メインストリームとなる処理関数の定義***********************************************/
 
 // 読み込み後のイベントを定義
 window.addEventListener('load', function () {
   resizeTo(canvasElement.height, canvasElement.width); //ウィンドウサイズの指定
-  drawStart();        //描画開始関数
+  waitStart();        //描画開始関数
 });
 /**
-* @function drawStart
+* @function waitStart
 * アニメーション開始関数
 * 待ち画面を表示させて、イベントリスナーを登録する
 */
-var drawStart=function() {
+var waitStart=function() {
   //開始待ち
   context.save()
 	context.fillStyle = "gray";      //塗りつぶし色を指定
@@ -83,10 +80,8 @@ var drawStart=function() {
 	context.fillStyle = "orange";      //塗りつぶし色を指定
 	context.font="20px 'Times New Roman'";
 	context.textAlign="center";
-	context.fillText("Click Start!",(900)/2,canvasElement.height/2+100);
+	context.fillText("created by 中前 和恭",(900)/2,canvasElement.height/2+100);
   context.restore()
-	//クリックでloop()に入るイベントを追加
-	document.documentElement.addEventListener("click", loop,false);
 }
 /**
 * @function loop
@@ -98,7 +93,17 @@ var drawStart=function() {
 var loop=function() {
   //初期処理
   if(time==0){
-    context.clearRect(0, 0, canvasElement.width, canvasElement.height); //canvasの全領域をクリアー
+    //ユーザー設定読み込み
+    trials=document.getElementById("trials").value;
+    controlSeed=document.getElementById("seed").value;
+    forwardProb=eval(document.getElementById("prob").value);
+    //ランダムウォーク処理を行うクラスのインスタンスを宣言し、初期座標を入力
+    RWsimulation = new randomwalker(trials,width/2);
+    for(var i=trials-1;i>=0;i--){
+      RWsimulation.setRW(0,'x',i)
+    }
+    //canvasの全領域をクリアー
+    context.clearRect(0, 0, canvasElement.width, canvasElement.height);
     //tの座標
     context.save();
     for(var i=xaxisArr.length-1;i>=0;i--){
@@ -174,7 +179,7 @@ var loop=function() {
     context.restore();
     //each x
     context.save()
-    context.strokeStyle="red"
+    context.strokeStyle="darkorange"
     context.globalAlpha=0.3;
     for(var i=1499;i>=0;i--){
       context.beginPath()
@@ -197,12 +202,16 @@ var loop=function() {
     }
     context.restore()
     //histogram
+    context.save()
+    context.strokeStyle="dimgray"
+    context.fillStyle="dimgray"
     for(var i=RWsimulation.get('maxX');i>=-RWsimulation.get('maxX');i--){
       context.beginPath()
       context.moveTo(i+width/2, height/2-10-RWsimulation.get('histX')[i])
       context.lineTo(i+width/2, height/2-10)
       context.stroke()
     }
+    context.restore()
     //The point of mean
     context.beginPath();
     context.moveTo(mean+width/2,height/2-10);
@@ -226,11 +235,10 @@ var loop=function() {
   }
 
   //the part of transition
-  var controlSeed=1;
-  RWsimulation.walk(2/3,time,controlSeed);
+  RWsimulation.walk(forwardProb,time,controlSeed);
 
   //time proceeding
   time++;
 
-  if(time!=10000) requestAnimationFrame(loop);     //loop関数の呼び出し
+  if(time!=801) requestAnimationFrame(loop);     //loop関数の呼び出し
 }
